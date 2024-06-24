@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - PubMed Summarization</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-top: 20px;
+            background-color: #ffffff; /* White background */
+        }
+        .navbar {
+            background-color: #6c757d; /* Grey background color */
+        }
+        .navbar-brand {
+            color: #ffffff; /* Navbar brand (logo) color */
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff; /* Navbar links color */
+        }
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa; /* Navbar links color on hover */
+        }
+        .container {
+            text-align: center; /* Center align content */
+            margin-top: 50px; /* Margin from top */
+        }
+        #animationCanvas {
+            width: 400px; /* Adjust canvas width */
+            height: 400px; /* Adjust canvas height */
+            margin: 0 auto; /* Center horizontally */
+        }
+        .title {
+            margin-top: 20px; /* Margin top for title */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">PubMed Summarization</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/add_entry">Add Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pubmed_articles">PubMed Articles</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Welcome to PubMed Summarization</h1>
+        
+        <!-- Canvas for Three.js Animation -->
+        <canvas id="animationCanvas"></canvas>
+        
+        <!-- Title for text below animation -->
+        <div class="title">
+            <h3>A cutting-edge tool for biomedical research</h3>
+        </div>
+    </div>
+
+    <!-- Include Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // JavaScript for Three.js Star Model Animation
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('animationCanvas') });
+
+        renderer.setSize(400, 400); // Set canvas size
+        renderer.setClearColor(0xffffff); // White background
+
+        // Create star geometry
+        var starShape = new THREE.Shape();
+        starShape.moveTo(0, 5);
+        starShape.lineTo(2, 2);
+        starShape.lineTo(5, 2);
+        starShape.lineTo(3, 0);
+        starShape.lineTo(4, -4);
+        starShape.lineTo(0, -2);
+        starShape.lineTo(-4, -4);
+        starShape.lineTo(-3, 0);
+        starShape.lineTo(-5, 2);
+        starShape.lineTo(-2, 2);
+        starShape.lineTo(0, 5);
+
+        var extrudeSettings = { depth: 1, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 1, bevelThickness: 1 };
+        var geometry = new THREE.ExtrudeGeometry(starShape, extrudeSettings);
+        var material = new THREE.MeshPhongMaterial({ color: 0xffd700 }); // Gold color material
+        var star = new THREE.Mesh(geometry, material);
+        scene.add(star);
+
+        camera.position.z = 15;
+
+        // Ambient light
+        var ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
+        scene.add(ambientLight);
+
+        // Directional light
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(1, 1, 1).normalize();
+        scene.add(directionalLight);
+
+        var animate = function () {
+            requestAnimationFrame(animate);
+
+            star.rotation.y += 0.05; // Rotate star along x-axis
+
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
+</body>
+</html>
